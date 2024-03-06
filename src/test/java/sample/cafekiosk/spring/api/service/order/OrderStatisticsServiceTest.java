@@ -75,6 +75,7 @@ class OrderStatisticsServiceTest {
         Order order3 = createPaymentCompletedOrder(products, LocalDateTime.of(2024, 3, 5, 23, 59, 59));
         Order order4 = createPaymentCompletedOrder(products, LocalDateTime.of(2024, 3, 6, 0, 0));
 
+        // stubbing
         Mockito.when(mailsendClient.sendEmail(any(String.class), any(String.class), any(String.class), any(String.class)))
                 .thenReturn(true);
 
@@ -88,7 +89,6 @@ class OrderStatisticsServiceTest {
         assertThat(histories).hasSize(1)
                 .extracting("content")
                 .contains("총 매출 합계는 12000원 입니다.");
-
     }
 
     private Order createPaymentCompletedOrder(List<Product> products, LocalDateTime now) {
