@@ -48,5 +48,51 @@ class MailServiceTest {
         verify(mailSendHistoryRepository, times(1)).save(any(MailSendHistory.class));
     }
 
+    @DisplayName("메일 전송 테스트 어노테이션(@Mock) 사용")
+    @Test
+    void sendMail2() {
+        // given
+        when(mailSendClient.sendEmail(anyString(), anyString(), anyString(), anyString()))
+                .thenReturn(true);
+
+        // when
+        boolean result = mailService.sendMail("", "", "", "");
+
+        // then
+        assertThat(result).isTrue();
+        verify(mailSendHistoryRepository, times(1)).save(any(MailSendHistory.class));
+    }
+
+    @DisplayName("메일 전송 테스트 BDDMockito 사용")
+    @Test
+    void sendMail3() {
+        // given
+        given(mailSendClient.sendEmail(anyString(), anyString(), anyString(), anyString()))
+                .willReturn(true);
+
+        // when
+        boolean result = mailService.sendMail("", "", "", "");
+
+        // then
+        assertThat(result).isTrue();
+        verify(mailSendHistoryRepository, times(1)).save(any(MailSendHistory.class));
+    }
+
+    @DisplayName("메일 전송 테스트 스파이(@Spy) 사용")
+    @Test
+    void sendMail4() {
+        // given
+        doReturn(true)
+                .when(mailSendClient)
+                .sendEmail(anyString(), anyString(), anyString(), anyString());
+
+        // when
+        boolean result = mailService.sendMail("", "", "", "");
+
+        // then
+        assertThat(result).isTrue();
+        verify(mailSendHistoryRepository, times(1)).save(any(MailSendHistory.class));
+    }
+
 
 }
